@@ -1,8 +1,9 @@
 export default {
     rickMorty:{
         info:{},
-        result:[]   
+        result:[]
     },
+    pageNumber:1,
     filters:[
         {
             name:"Species",
@@ -30,5 +31,6 @@ export default {
         }
     ],
     filteredValues:[],
-    errors:''
+    errors:'',
+    singleCharacter:{}
 }
