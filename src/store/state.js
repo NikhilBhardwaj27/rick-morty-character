@@ -1,5 +1,8 @@
 export default {
-    rickMorty:[],
+    rickMorty:{
+        info:{},
+        result:[]   
+    },
     filters:[
         {
             name:"Species",
@@ -25,5 +28,7 @@ export default {
                 'Other things...'
             ]
         }
-    ]
+    ],
+    filteredValues:[],
+    errors:''
 }
