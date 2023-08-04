@@ -21,7 +21,7 @@
     <div class="flex flex-col justify-between md:flex-row">
       <SearchComponent />
 
-      <div class="mt-12">
+      <div class="mt-12 mr-8">
         <select
           @change="handleSort"
           class="border-2 w-full border-black p-2 ml-3"
@@ -46,21 +46,29 @@
         <router-link
           :to="{
             name: 'characterDetails',
-            params: { name: rickMortyCharacter.name,id:rickMortyCharacter.id},
+            params: {
+              name: rickMortyCharacter.name,
+              id: rickMortyCharacter.id,
+            },
           }"
           class="black-bg"
         >
           <RickMortyCard :rickMortyCharacter="rickMortyCharacter" />
         </router-link>
-        
       </template>
     </div>
 
     <div class="w-full text-center my-8" v-if="rickMortyDataResult.length > 0">
-      <button class="border-2 p-2 border-slate-500" @click="handleLoadMore">
+      <button
+        class="border-2 p-2 border-slate-500"
+        @click="handleLoadMore"
+        :class="
+          searchKeyword.length > 0 || filteredValues.length > 0 ? 'hidden' : ''
+        "
+      >
         Load More
       </button>
-      Total Loaded - {{ rickMortyData.result.length }}
+      Total Loaded - {{ rickMortyData.resultCopy.length }}
     </div>
 
     <div v-if="rickMortyDataResult.length == 0" class="ml-3">
@@ -71,7 +79,7 @@
 
 <script setup>
 //Imports
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import { useStore } from "vuex";
 import SearchComponent from "./SearchComponent.vue";
 import RickMortyCard from "./RickMortyCard.vue";
@@ -92,9 +100,27 @@ const emit = defineEmits(["onfilterClose"]);
 const store = useStore();
 const checkEmpty = computed(() => store.getters["checkEmptyFilterValues"]);
 const rickMortyData = computed(() => store.state.rickMorty);
-const rickMortyDataResult = computed(() => store.state.rickMorty.result);
+const rickMortyDataResult = computed(() => store.state.rickMorty.resultCopy);
 const pageNumber = computed(() => store.state.pageNumber);
 const error = computed(() => store.state.error);
+const searchKeyword = computed(() => store.state.searchKeyword);
+
+// watchers
+watch(
+  () => props.filteredValues,
+  (filteredValuesNew, filteredValuesOld) => {
+    if (filteredValuesNew.length > filteredValuesOld.length) {
+      let rickMortyData = computed(() => store.getters["filtersLogic"]);
+      store.commit("updateRickMortyArray", rickMortyData.value);
+    } else {
+      let rickMortyData = computed(() =>
+        store.getters.filtersLogicUncheck(filteredValuesOld)
+      );
+
+      store.commit("updateRickMortyArray", rickMortyData.value);
+    }
+  }
+);
 
 //functions
 function handleCloseFilter(val) {
@@ -105,7 +131,7 @@ function handleLoadMore() {
 }
 function handleSort(e) {
   let rickMortyData = computed(() => store.getters.sortData(e.target.value));
-  store.commit("updateRickMortyArray", rickMortyData);
+  store.commit("updateRickMortyArray", rickMortyData.value);
 }
 </script>
 
