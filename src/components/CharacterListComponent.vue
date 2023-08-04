@@ -109,16 +109,8 @@ const searchKeyword = computed(() => store.state.searchKeyword);
 watch(
   () => props.filteredValues,
   (filteredValuesNew, filteredValuesOld) => {
-    if (filteredValuesNew.length > filteredValuesOld.length) {
-      let rickMortyData = computed(() => store.getters["filtersLogic"]);
-      store.commit("updateRickMortyArray", rickMortyData.value);
-    } else {
-      let rickMortyData = computed(() =>
-        store.getters.filtersLogicUncheck(filteredValuesOld)
-      );
-
-      store.commit("updateRickMortyArray", rickMortyData.value);
-    }
+    let rickMortyData = computed(() => store.getters["filtersLogic"]);
+    store.commit("updateRickMortyArray", rickMortyData.value);
   }
 );
 

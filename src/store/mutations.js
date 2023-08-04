@@ -23,6 +23,7 @@ export function updateRickMortyArray(state, rickMortyData) {
 export function setSingleCharacter(state, { data }) {
   state.singleCharacter = data;
 }
+
 export function setSearchKeyword(state, keyword) {
   state.searchKeyword = keyword;
 }
