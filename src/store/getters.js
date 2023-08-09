@@ -25,10 +25,10 @@ export const setSearchedRickMorty = (state) => (keyword) => {
   
 };
 
-export const coreFilterLogic = (result1, filterValue) => {
+export const coreFilterLogic = (result1, filterValue,localFilterValues) => {
   return result1.filter((data) => {
     if (filterValue == "Male" || filterValue == "Female") {
-      return data.gender == filterValue
+      return localFilterValues.includes(data.gender)
     } else if (
       filterValue == "Human" ||
       filterValue == "Mytholog" ||
@@ -36,13 +36,13 @@ export const coreFilterLogic = (result1, filterValue) => {
     ) {
       return filterValue == "Other Species..."
         ? data.species !== "Human" && data.species !== "Mytholog"
-        : data.species == filterValue
+        : localFilterValues.includes(data.species)
     } else {
       return filterValue == "Other Origins..."
         ? data.origin?.name !== "unknown" &&
             data.origin?.name !== "Post-Apocalyptic Earth" &&
             data.origin?.name !== "Nupita 4"
-        : data.origin?.name == filterValue
+        : localFilterValues.includes(data.origin?.name)
     }
   });
 };
@@ -52,7 +52,7 @@ export const filtersLogic = (state) => {
   let result1 = state.rickMorty.result.slice();let result2;
   let localFilterValues = state.filteredValues.slice();
   localFilterValues.forEach((filterValue) => {
-    result2 = coreFilterLogic(result1, filterValue);
+    result2 = coreFilterLogic(result1, filterValue,localFilterValues);
     result1 = result2;
   });
   return result2;
