@@ -47,7 +47,7 @@
   </div>
 </template>
 <script setup>
-import { computed, onBeforeMount, onMounted } from "vue";
+import { computed, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 

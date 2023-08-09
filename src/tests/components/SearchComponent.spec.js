@@ -12,4 +12,6 @@ it("Render Heading Search by Name", async () => {
     expect(text.text()).toContain('Search By Name')
 });
 
-
+it("Search Button rendering", () => {
+    expect(wrapper.find("button").exists()).toBe(true)
+});

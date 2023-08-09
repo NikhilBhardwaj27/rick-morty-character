@@ -71,7 +71,7 @@ const props = defineProps({
 
 const time = ref();
 onMounted(() => {
-  time.value = moment(props.rickMortyCharacter.created, "YYYYMMDD").fromNow();
+  time.value = moment(props.rickMortyCharacter.created, "YYYYMMDD").fromNow() || '';
 });
 </script>
 
